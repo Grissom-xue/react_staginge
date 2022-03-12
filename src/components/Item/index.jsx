@@ -4,6 +4,8 @@ import './index.css'
 export default class Item extends Component {
 
     state = {mouse: false}
+
+    //事件的回调函数 返回都要是一个函数
     handleMouse = (flag) => {
         return () => {
             this.setState({mouse: flag})
@@ -11,8 +13,16 @@ export default class Item extends Component {
     }
     handleCheck = (id) => {
         return (event) => {
-            console.log(id, event.target.checked)
+            this.props.updateTodao(id, event.target.checked)
         }
+    }
+    // 删除一个TODO的回调
+    handleDelete = (id) => {
+        if (window.confirm("确定删除吗？")) {
+            // 通知APP组件删除一个TODO
+            this.props.deleteTodo(id)
+        }
+
     }
 
 
@@ -29,10 +39,13 @@ export default class Item extends Component {
                     onMouseLeave={this.handleMouse(false)}>
                     <label>
                         {/*defaultChecked 表示默认勾选的 后面可以进行修改的,当事件更改的是该标签本身的属性时，就可以使用event*/}
-                        <input type="checkbox" defaultChecked={done} onChange={this.handleCheck(id)}/>
+                        <input type="checkbox" checked={done} onChange={this.handleCheck(id)}/>
                         <span>{name}</span>
                     </label>
-                    <button className="btn btn-danger" style={{display: mouse ? 'block' : 'none'}}>删除</button>
+                    <button onClick={() => {
+                        this.handleDelete(id)
+                    }} className="btn btn-danger" style={{display: mouse ? 'block' : 'none'}}>删除
+                    </button>
                 </li>
             </div>
         );

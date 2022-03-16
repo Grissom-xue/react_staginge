@@ -5,12 +5,23 @@ import List from "./components/List";
 
 // 创建并暴露组件
 export default class App extends Component {
+    state = {
+        users: [],
+        isFirst: true,
+        isLoading: false,
+        err: ''
+    }
+
+    updateAppState = (stateObj) => {
+        // 记得加{}
+        this.setState(stateObj)
+    }
 
     render() {
         return (
             <div className="container">
-                <Search/>
-                <List/>
+                <Search updateAppState={this.updateAppState}/>
+                <List {...this.state}/>
             </div>
         );
     }
